@@ -1,0 +1,23 @@
+{
+  "name": "aws-speech-to-text",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --open --config webpack.config.js"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-transcribe-streaming": "^3.651.1",
+    "aws-speech-to-text": "file:",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "dotenv": "^16.5.0",
+    "microphone-stream": "^6.0.1",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10"
+  }
+}
