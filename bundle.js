@@ -9,17 +9,6 @@ const AWS_REGION = process.env.AWS_REGION;
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 
-// Check if environment variables are set
-console.log("AWS_REGION:", AWS_REGION);
-console.log("AWS_ACCESS_KEY_ID:", AWS_ACCESS_KEY_ID);
-console.log("AWS_SECRET_ACCESS_KEY:", AWS_SECRET_ACCESS_KEY);
-
-if (!AWS_REGION || !AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
-  console.error(
-    "Please set AWS_REGION, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY in your environment variables."
-  );
-}
-
 let microphoneStream = undefined;
 const language = "en-US";
 const SAMPLE_RATE = 44100;
