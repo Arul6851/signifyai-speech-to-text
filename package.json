@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-transcribe-streaming": "^3.651.1",
+    "assert": "^2.1.0",
     "aws-speech-to-text": "file:",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
@@ -14,6 +15,9 @@
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
