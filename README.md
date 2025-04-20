@@ -83,7 +83,3 @@ VITE_BACKEND_URL=http://localhost:5000
 Make sure your backend server is running and accessible via the specified `VITE_BACKEND_URL`.
 
 ---
-
-## 📄 License
-
-MIT License
