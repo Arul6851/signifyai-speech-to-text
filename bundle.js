@@ -4,10 +4,12 @@ import {
 } from "@aws-sdk/client-transcribe-streaming";
 import MicrophoneStream from "microphone-stream";
 import { Buffer } from "buffer";
+import { Sign } from "crypto";
 
 const AWS_REGION = process.env.AWS_REGION;
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
+const SIGNIFY_SERVER_URL = process.env.SIGNIFY_SERVER_URL;
 
 let microphoneStream = undefined;
 const language = "en-US";
@@ -100,19 +102,52 @@ export const stopRecording = function () {
 
 const startButton = document.getElementById("start");
 const stopButton = document.getElementById("stop");
+const clearButton = document.getElementById("clear");
 const transcriptionDiv = document.getElementById("transcription");
 
 let transcription = "";
 
+console.log("AWS Region: ", AWS_REGION);
+console.log("AWS Access Key ID: ", AWS_ACCESS_KEY_ID);
+console.log("AWS Secret Access Key: ", AWS_SECRET_ACCESS_KEY);
+
 startButton.addEventListener("click", async () => {
-  await startRecording((text) => {
+  await startRecording(async (text) => {
     transcription += text;
     transcriptionDiv.innerHTML = transcription;
+
+    // Send final transcript to backend
+    const response = await fetch(SIGNIFY_SERVER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to generate pose GIF");
+      return;
+    }
+
+    const blob = await response.blob();
+    const gifUrl = URL.createObjectURL(blob);
+
+    // Display the GIF
+    const gifElement = document.getElementById("poseGif");
+    gifElement.src = gifUrl;
+    gifElement.style.display = "block";
   });
 });
 
 stopButton.addEventListener("click", () => {
   stopRecording();
+});
+
+clearButton.addEventListener("click", () => {
   transcription = "";
   transcriptionDiv.innerHTML = "";
+  const gifElement = document.getElementById("poseGif");
+  gifElement.src = "";
+  gifElement.style.display = "none";
 });
