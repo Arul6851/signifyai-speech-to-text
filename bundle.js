@@ -5,6 +5,7 @@ import {
 import MicrophoneStream from "microphone-stream";
 import { Buffer } from "buffer";
 import { Sign } from "crypto";
+import { send } from "process";
 
 const AWS_REGION = process.env.AWS_REGION;
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
@@ -103,6 +104,8 @@ export const stopRecording = function () {
 const startButton = document.getElementById("start");
 const stopButton = document.getElementById("stop");
 const clearButton = document.getElementById("clear");
+const inputText = document.getElementById("textInput");
+const sendButton = document.getElementById("sendText");
 const transcriptionDiv = document.getElementById("transcription");
 
 let transcription = "";
@@ -112,6 +115,7 @@ console.log("AWS Access Key ID: ", AWS_ACCESS_KEY_ID);
 console.log("AWS Secret Access Key: ", AWS_SECRET_ACCESS_KEY);
 
 startButton.addEventListener("click", async () => {
+  clearButton.click();
   await startRecording(async (text) => {
     transcription += text;
     transcriptionDiv.innerHTML = transcription;
@@ -150,4 +154,34 @@ clearButton.addEventListener("click", () => {
   const gifElement = document.getElementById("poseGif");
   gifElement.src = "";
   gifElement.style.display = "none";
+  inputText.value = "";
+});
+
+sendButton.addEventListener("click", async () => {
+  const text = inputText.value.trim();
+  if (text) {
+    const response = await fetch(SIGNIFY_SERVER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to generate pose GIF");
+      return;
+    }
+
+    const blob = await response.blob();
+    const gifUrl = URL.createObjectURL(blob);
+
+    // Display the GIF
+    const gifElement = document.getElementById("poseGif");
+    gifElement.src = gifUrl;
+    gifElement.style.display = "block";
+  } else {
+    alert("Please enter some text.");
+  }
+  inputText.value = ""; // Clear the input field after sending
 });
