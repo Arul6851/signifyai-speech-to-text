@@ -110,10 +110,6 @@ const transcriptionDiv = document.getElementById("transcription");
 
 let transcription = "";
 
-console.log("AWS Region: ", AWS_REGION);
-console.log("AWS Access Key ID: ", AWS_ACCESS_KEY_ID);
-console.log("AWS Secret Access Key: ", AWS_SECRET_ACCESS_KEY);
-
 startButton.addEventListener("click", async () => {
   clearButton.click();
   await startRecording(async (text) => {
