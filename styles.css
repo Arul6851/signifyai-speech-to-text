@@ -1,58 +1,91 @@
-/* General body styling */
+/* Base layout */
 body {
-  background-color: #121212;
-  color: #e0e0e0;
+  background: linear-gradient(to bottom, #0d0d0d, #1c1c1c);
+  color: #e4e4e4;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  padding: 40px;
+  padding: 40px 20px;
+  margin: 0;
+  min-height: 100vh;
 }
 
-/* Input field */
-input[type="text"] {
-  padding: 10px;
-  width: 300px;
-  background-color: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 5px;
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-/* Buttons */
+/* Buttons - Neutral by default */
 button {
   background-color: #1f1f1f;
-  color: #e0e0e0;
+  color: #fff;
   border: 1px solid #444;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
+  padding: 12px 28px;
+  margin: 12px 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #333;
+/* Hover styles per button */
+button#start:hover {
+  background: #00ff94;
+  color: #0a0a0a;
+  box-shadow: 0 0 15px rgba(0, 255, 148, 0.6);
 }
 
-/* Transcription display */
+button#stop:hover {
+  background: #ff4b5c;
+  color: #0a0a0a;
+  box-shadow: 0 0 15px rgba(255, 75, 92, 0.6);
+}
+
+button#clear:hover {
+  background: #ffc107;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+}
+
+button#sendText:hover {
+  background: #00f0ff;
+  color: #0a0a0a;
+  box-shadow: 0 0 15px rgba(255, 60, 109, 0.6);
+}
+
+/* Text Input - Cool Cyan */
+input[type="text"] {
+  background-color: #1c1c1c;
+  color: #e0f7ff;
+  padding: 12px;
+  border-radius: 10px;
+  width: 320px;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+/* Transcription Output */
 #transcription {
   margin-top: 30px;
-  padding: 20px;
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  font-size: 1.1rem;
+  color: #dcdcdc;
+  font-style: italic;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
 }
 
-/* Pose GIF styling */
+/* Pose Gif */
 #poseGif {
   max-width: 80%;
-  /* display: block; */
-  margin: 100px auto 0 auto;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  display: block;
+  margin: 40px auto 0;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(171, 71, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#poseGif:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(171, 71, 255, 0.6);
 }
