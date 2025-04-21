@@ -16,6 +16,8 @@ let microphoneStream = undefined;
 const language = "en-US";
 const SAMPLE_RATE = 44100;
 let transcribeClient = undefined;
+let count = 0;
+let queue = [];
 
 const createMicrophoneStream = async () => {
   microphoneStream = new MicrophoneStream();
@@ -116,24 +118,27 @@ startButton.addEventListener("click", async () => {
     transcription += text;
     transcriptionDiv.innerHTML = transcription;
 
-    // Send final transcript to backend
     const response = await fetch(SIGNIFY_SERVER_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, count }),
     });
 
+    count += 1;
+    if (response.status === 429) {
+      console.error("Rate limit exceeded. Please try again later.");
+      return;
+    }
     if (!response.ok) {
       console.error("Failed to generate pose GIF");
       return;
     }
+    const { fileLink, counter } = await response.json();
+    const gifUrl = fileLink;
+    console.log("Counter : ", counter);
 
-    const blob = await response.blob();
-    const gifUrl = URL.createObjectURL(blob);
-
-    // Display the GIF
     const gifElement = document.getElementById("poseGif");
     gifElement.src = gifUrl;
     gifElement.style.display = "block";
@@ -154,6 +159,7 @@ clearButton.addEventListener("click", () => {
 });
 
 sendButton.addEventListener("click", async () => {
+  clearButton.click();
   const text = inputText.value.trim();
   if (text) {
     const response = await fetch(SIGNIFY_SERVER_URL, {
@@ -161,23 +167,27 @@ sendButton.addEventListener("click", async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, count }),
     });
 
     if (!response.ok) {
       console.error("Failed to generate pose GIF");
       return;
     }
+    count += 1;
+    if (response.status === 429) {
+      console.error("Rate limit exceeded. Please try again later.");
+      return;
+    }
+    const { fileLink, counter } = await response.json();
+    const gifUrl = fileLink;
+    console.log("Counter : ", counter);
 
-    const blob = await response.blob();
-    const gifUrl = URL.createObjectURL(blob);
-
-    // Display the GIF
     const gifElement = document.getElementById("poseGif");
     gifElement.src = gifUrl;
     gifElement.style.display = "block";
   } else {
     alert("Please enter some text.");
   }
-  inputText.value = ""; // Clear the input field after sending
+  inputText.value = "";
 });
